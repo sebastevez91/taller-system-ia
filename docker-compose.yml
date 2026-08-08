@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: taller-system-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: taller_admin
+      POSTGRES_PASSWORD: taller_dev_2026
+      POSTGRES_DB: vehiculo_mantenimiento
+    ports:
+      - "5433:5432"
+    volumes:
+      - taller_pgdata:/var/lib/postgresql/data
+
+volumes:
+  taller_pgdata:

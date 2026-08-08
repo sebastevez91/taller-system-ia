@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  ADMIN
+  MECANICO
+  DUENIO
+}
+
+enum TipoMantenimiento {
+  PREVENTIVO
+  CORRECTIVO
+}
+
+model Usuario {
+  id           String     @id @default(uuid())
+  nombre       String
+  email        String     @unique
+  passwordHash String
+  rol          Rol
+  vehiculos    Vehiculo[]
+  creadoEn     DateTime   @default(now())
+}
+
+model Vehiculo {
+  id         String                @id @default(uuid())
+  patente    String                @unique
+  marca      String
+  modelo     String
+  anio       Int
+  kmActual   Int
+  usuario    Usuario               @relation(fields: [usuarioId], references: [id])
+  usuarioId  String
+  componentes VehiculoComponente[]
+  mantenimientos Mantenimiento[]
+  predicciones   Prediccion[]
+  creadoEn   DateTime              @default(now())
+}
+
+model Componente {
+  id             String                @id @default(uuid())
+  nombre         String                @unique
+  vidaUtilKm     Int
+  vidaUtilMeses  Int
+  instalaciones  VehiculoComponente[]
+  mantenimientos Mantenimiento[]
+  predicciones   Prediccion[]
+}
+
+model VehiculoComponente {
+  id               String     @id @default(uuid())
+  vehiculo         Vehiculo   @relation(fields: [vehiculoId], references: [id])
+  vehiculoId       String
+  componente       Componente @relation(fields: [componenteId], references: [id])
+  componenteId     String
+  fechaInstalacion DateTime
+  kmInstalacion    Int
+
+  @@unique([vehiculoId, componenteId])
+}
+
+model Mantenimiento {
+  id           String            @id @default(uuid())
+  vehiculo     Vehiculo          @relation(fields: [vehiculoId], references: [id])
+  vehiculoId   String
+  componente   Componente        @relation(fields: [componenteId], references: [id])
+  componenteId String
+  fecha        DateTime
+  kmAlMomento  Int
+  tipo         TipoMantenimiento
+  descripcion  String?
+  costo        Decimal           @db.Decimal(10, 2)
+}
+
+model Prediccion {
+  id             String     @id @default(uuid())
+  vehiculo       Vehiculo   @relation(fields: [vehiculoId], references: [id])
+  vehiculoId     String
+  componente     Componente @relation(fields: [componenteId], references: [id])
+  componenteId   String
+  scoreRiesgo    Decimal    @db.Decimal(5, 4)
+  fechaGenerada  DateTime   @default(now())
+  recomendacion  String
+}
