@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+__pycache__/
+venv/
+
+# Variables de entorno (NUNCA subir esto)
+.env
+.env.local
+
+# Build
+dist/
+build/
+
+# Prisma
+backend/prisma/migrations/dev.db
+
+# Editor/OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
