@@ -3,7 +3,7 @@ node_modules/
 __pycache__/
 venv/
 
-# Variables de entorno (NUNCA subir esto)
+# Variables de entorno 
 .env
 .env.local
 
