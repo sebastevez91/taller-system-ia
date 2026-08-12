@@ -4,7 +4,7 @@ import { Rol } from '@prisma/client';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-export interface AuthRequest extends Request {
+export interface AuthRequest<P = {}> extends Request<P> {
   usuario?: { id: string; rol: Rol };
 }
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes';
+import vehiculoRoutes from './routes/vehiculo.routes';
 
 const app = express();
 
@@ -12,5 +13,6 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/vehiculos', vehiculoRoutes);
 
 export default app;

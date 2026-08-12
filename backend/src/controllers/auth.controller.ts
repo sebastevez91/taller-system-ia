@@ -17,6 +17,7 @@ export async function login(req: Request, res: Response) {
     const resultado = await loginUsuario(email, password);
     res.json(resultado);
   } catch (error) {
+    console.error('Error inesperado en login:', error);
     res.status(401).json({ error: 'Credenciales inválidas' });
   }
 }
