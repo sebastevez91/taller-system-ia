@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import type { Vehiculo } from '../types';
 import { useAuth } from '../context/AuthContext';
@@ -8,6 +9,7 @@ export default function Vehiculos() {
   const [cargando, setCargando] = useState(true);
   const [mostrarForm, setMostrarForm] = useState(false);
   const { usuario, logout } = useAuth();
+  const navigate = useNavigate();
 
   const [nuevoVehiculo, setNuevoVehiculo] = useState({
     patente: '', marca: '', modelo: '', anio: '', kmActual: '',
@@ -112,17 +114,18 @@ export default function Vehiculos() {
           </thead>
           <tbody>
             {vehiculos.map((v) => (
-              <tr key={v.id} className="border-b hover:bg-gray-50">
+            <tr
+                key={v.id}
+                onClick={() => navigate(`/vehiculos/${v.id}`)}
+                className="border-b hover:bg-gray-50 cursor-pointer"
+            >
                 <td className="p-3 font-medium">{v.patente}</td>
                 <td className="p-3">{v.marca}</td>
                 <td className="p-3">{v.modelo}</td>
                 <td className="p-3">{v.anio}</td>
                 <td className="p-3">{v.kmActual.toLocaleString()} km</td>
-              </tr>
+            </tr>
             ))}
-            {vehiculos.length === 0 && (
-              <tr><td colSpan={5} className="p-6 text-center text-gray-400">No hay vehículos cargados</td></tr>
-            )}
           </tbody>
         </table>
       </div>

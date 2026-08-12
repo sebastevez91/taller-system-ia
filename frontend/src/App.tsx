@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Vehiculos from './pages/Vehiculos';
+import VehiculoDetalle from './pages/VehiculoDetalle';
+import Mantenimientos from './pages/Mantenimientos';
 
 function RutaProtegida({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -21,6 +23,22 @@ function AppRoutes() {
         }
       />
       <Route path="/" element={<Navigate to="/vehiculos" replace />} />
+      <Route
+        path="/vehiculos/:id"
+        element={
+          <RutaProtegida>
+            <VehiculoDetalle />
+          </RutaProtegida>
+        }
+      />
+      <Route
+        path="/mantenimientos"
+        element={
+          <RutaProtegida>
+            <Mantenimientos />
+          </RutaProtegida>
+        }
+      />
     </Routes>
   );
 }
