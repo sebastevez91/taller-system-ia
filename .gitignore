@@ -21,3 +21,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Modelo entrenado (se regenera con train_model.py, no hace falta versionarlo)
+ml-service/*.pkl
