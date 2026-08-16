@@ -4,6 +4,8 @@ import authRoutes from './routes/auth.routes';
 import vehiculoRoutes from './routes/vehiculo.routes';
 import componenteRoutes from './routes/componente.routes';
 import mantenimientoRoutes from './routes/mantenimiento.routes';
+import vehiculoComponenteRoutes from './routes/vehiculoComponente.routes';
+import prediccionRoutes from './routes/prediccion.routes';
 
 const app = express();
 
@@ -18,5 +20,7 @@ app.use('/auth', authRoutes);
 app.use('/vehiculos', vehiculoRoutes);
 app.use('/componentes', componenteRoutes);
 app.use('/mantenimientos', mantenimientoRoutes);
+app.use('/vehiculo-componentes', vehiculoComponenteRoutes);
+app.use('/predicciones', prediccionRoutes);
 
 export default app;
