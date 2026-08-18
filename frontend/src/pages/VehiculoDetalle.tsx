@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/client';
-import type { Vehiculo, Mantenimiento } from '../types';
+import type { Vehiculo, Mantenimiento, Prediccion  } from '../types';
 
 export default function VehiculoDetalle() {
   const { id } = useParams<{ id: string }>();
@@ -9,6 +9,7 @@ export default function VehiculoDetalle() {
   const [vehiculo, setVehiculo] = useState<Vehiculo | null>(null);
   const [mantenimientos, setMantenimientos] = useState<Mantenimiento[]>([]);
   const [cargando, setCargando] = useState(true);
+  const [predicciones, setPredicciones] = useState<Prediccion[]>([]);
 
   useEffect(() => {
     async function cargar() {
@@ -18,6 +19,11 @@ export default function VehiculoDetalle() {
       ]);
       setVehiculo(resVehiculo.data);
       setMantenimientos(resMantenimientos.data);
+
+      // Generamos predicciones frescas para todos los componentes de este vehículo
+      const resPredicciones = await api.post<Prediccion[]>(`/predicciones/vehiculo/${id}/generar-todas`);
+      setPredicciones(resPredicciones.data);
+
       setCargando(false);
     }
     cargar();
@@ -41,6 +47,28 @@ export default function VehiculoDetalle() {
         </p>
       </div>
 
+      <h2 className="text-lg font-semibold text-gray-700 mb-3">Riesgo de fallas por componente</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {predicciones.map((p) => {
+          const color =
+            p.scoreRiesgo >= 0.7 ? 'bg-red-50 border-red-300 text-red-700' :
+            p.scoreRiesgo >= 0.4 ? 'bg-yellow-50 border-yellow-300 text-yellow-700' :
+            'bg-green-50 border-green-300 text-green-700';
+
+          return (
+            <div key={p.id} className={`border rounded-lg p-4 ${color}`}>
+              <div className="flex justify-between items-center mb-1">
+                <span className="font-medium">{p.componente?.nombre}</span>
+                <span className="text-sm font-bold">{(Number(p.scoreRiesgo) * 100).toFixed(0)}%</span>
+              </div>
+              <p className="text-sm">{p.recomendacion}</p>
+            </div>
+          );
+        })}
+        {predicciones.length === 0 && (
+          <p className="text-gray-400 col-span-2">Sin componentes instalados para evaluar</p>
+        )}
+      </div>
       <h2 className="text-lg font-semibold text-gray-700 mb-3">Historial de mantenimientos</h2>
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full text-left">

@@ -28,6 +28,7 @@ export async function generarPrediccion(vehiculoId: string, componenteId: string
       scoreRiesgo: resultado.score_riesgo,
       recomendacion: resultado.recomendacion,
     },
+    include: { componente: true },
   });
 }
 
@@ -37,4 +38,23 @@ export async function listarPrediccionesDeVehiculo(vehiculoId: string) {
     include: { componente: true },
     orderBy: { fechaGenerada: 'desc' },
   });
+}
+
+export async function generarPrediccionesDeVehiculo(vehiculoId: string) {
+  const componentesInstalados = await prisma.vehiculoComponente.findMany({
+    where: { vehiculoId },
+  });
+
+  const predicciones = [];
+  for (const vc of componentesInstalados) {
+    try {
+      const prediccion = await generarPrediccion(vehiculoId, vc.componenteId);
+      predicciones.push(prediccion);
+    } catch (error) {
+      console.error(`Error generando predicción para componente ${vc.componenteId}:`, error);
+      // seguimos con los demás componentes aunque uno falle
+    }
+  }
+
+  return predicciones;
 }

@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middlewares/auth.middleware';
-import { generarPrediccion, listarPrediccionesDeVehiculo } from '../services/prediccion.service';
+import { generarPrediccion, listarPrediccionesDeVehiculo, generarPrediccionesDeVehiculo } from '../services/prediccion.service';
 
 export async function generar(req: AuthRequest, res: Response) {
   try {
@@ -15,4 +15,9 @@ export async function generar(req: AuthRequest, res: Response) {
 export async function listarPorVehiculo(req: AuthRequest<{ vehiculoId: string }>, res: Response) {
   const predicciones = await listarPrediccionesDeVehiculo(req.params.vehiculoId);
   res.json(predicciones);
+}
+
+export async function generarTodas(req: AuthRequest<{ vehiculoId: string }>, res: Response) {
+  const predicciones = await generarPrediccionesDeVehiculo(req.params.vehiculoId);
+  res.status(201).json(predicciones);
 }

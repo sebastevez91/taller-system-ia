@@ -38,3 +38,13 @@ export interface Mantenimiento {
   componente?: Componente;
   vehiculo?: Vehiculo;
 }
+
+export interface Prediccion {
+  id: string;
+  vehiculoId: string;
+  componenteId: string;
+  scoreRiesgo: number;
+  fechaGenerada: string;
+  recomendacion: string;
+  componente?: Componente;
+}

@@ -49,6 +49,12 @@ export default function Vehiculos() {
         </div>
         <div className="flex gap-2">
           <button
+            onClick={() => navigate('/dashboard')}
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          >
+            Dashboard
+          </button>
+          <button
             onClick={() => setMostrarForm(!mostrarForm)}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
