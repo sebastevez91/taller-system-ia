@@ -25,6 +25,7 @@ model Usuario {
   passwordHash String
   rol          Rol
   vehiculos    Vehiculo[]
+  notificaciones Notificacion[]
   creadoEn     DateTime   @default(now())
 }
 
@@ -87,4 +88,15 @@ model Prediccion {
   scoreRiesgo    Decimal    @db.Decimal(5, 4)
   fechaGenerada  DateTime   @default(now())
   recomendacion  String
+}
+
+model Notificacion {
+  id            String   @id @default(uuid())
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId     String
+  mensaje       String
+  leida         Boolean  @default(false)
+  vehiculoId    String?
+  componenteId  String?
+  creadaEn      DateTime @default(now())
 }

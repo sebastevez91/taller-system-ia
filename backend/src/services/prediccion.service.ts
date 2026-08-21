@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { consultarRiesgo } from './ia.service';
+import { crearNotificacionesRiesgoAlto } from './notificacion.service';
 
 const prisma = new PrismaClient();
 
@@ -21,7 +22,7 @@ export async function generarPrediccion(vehiculoId: string, componenteId: string
     kmDesdeInstalacion,
   });
 
-  return prisma.prediccion.create({
+  const prediccion = await prisma.prediccion.create({
     data: {
       vehiculoId,
       componenteId,
@@ -30,6 +31,12 @@ export async function generarPrediccion(vehiculoId: string, componenteId: string
     },
     include: { componente: true },
   });
+
+  if (resultado.score_riesgo >= 0.7) {
+    await crearNotificacionesRiesgoAlto(vehiculoId, vehiculoComponente.componenteId, vehiculoComponente.componente.nombre, resultado.score_riesgo);
+  }
+
+  return prediccion;
 }
 
 export async function listarPrediccionesDeVehiculo(vehiculoId: string) {

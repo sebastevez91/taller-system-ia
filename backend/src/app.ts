@@ -6,6 +6,7 @@ import componenteRoutes from './routes/componente.routes';
 import mantenimientoRoutes from './routes/mantenimiento.routes';
 import vehiculoComponenteRoutes from './routes/vehiculoComponente.routes';
 import prediccionRoutes from './routes/prediccion.routes';
+import notificacionRoutes from './routes/notificacion.routes';
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use('/componentes', componenteRoutes);
 app.use('/mantenimientos', mantenimientoRoutes);
 app.use('/vehiculo-componentes', vehiculoComponenteRoutes);
 app.use('/predicciones', prediccionRoutes);
+app.use('/notificaciones', notificacionRoutes);
 
 export default app;
