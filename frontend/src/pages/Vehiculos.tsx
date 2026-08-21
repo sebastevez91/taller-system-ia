@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import type { Vehiculo } from '../types';
 import { useAuth } from '../context/AuthContext';
+import Notificaciones from '../components/Notificaciones';
 
 export default function Vehiculos() {
   const [vehiculos, setVehiculos] = useState<Vehiculo[]>([]);
@@ -48,11 +49,18 @@ export default function Vehiculos() {
           <p className="text-sm text-gray-500">{usuario?.nombre} ({usuario?.rol})</p>
         </div>
         <div className="flex gap-2">
+          <Notificaciones />
           <button
             onClick={() => navigate('/dashboard')}
             className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
           >
             Dashboard
+          </button>
+          <button
+            onClick={() => navigate('/usuarios')}
+            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+          >
+            Usuarios
           </button>
           <button
             onClick={() => setMostrarForm(!mostrarForm)}

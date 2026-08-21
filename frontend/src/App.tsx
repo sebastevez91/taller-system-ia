@@ -5,6 +5,7 @@ import Vehiculos from './pages/Vehiculos';
 import VehiculoDetalle from './pages/VehiculoDetalle';
 import Mantenimientos from './pages/Mantenimientos';
 import Dashboard from './pages/Dashboard';
+import Usuarios from './pages/Usuarios';
 
 function RutaProtegida({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -45,6 +46,14 @@ function AppRoutes() {
         element={
           <RutaProtegida>
             <Mantenimientos />
+          </RutaProtegida>
+        }
+      />
+      <Route
+        path="/usuarios"
+        element={
+          <RutaProtegida>
+            <Usuarios />
           </RutaProtegida>
         }
       />

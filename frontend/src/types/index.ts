@@ -48,3 +48,11 @@ export interface Prediccion {
   recomendacion: string;
   componente?: Componente;
 }
+
+export interface UsuarioAdmin {
+  id: string;
+  nombre: string;
+  email: string;
+  rol: Rol;
+  creadoEn: string;
+}
